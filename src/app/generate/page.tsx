@@ -409,90 +409,70 @@ export default function GeneratePage() {
 	};
 
 
+	const [showAdvanced, setShowAdvanced] = useState(false);
+
 	return (
-		<div className="relative max-w-full overflow-hidden">
-			{/* Background */}
+		<div className="relative min-h-screen overflow-hidden">
+			{/* Enhanced Background */}
 			<div className="absolute inset-0 -z-10">
-				<div className="absolute inset-0 bg-gradient-to-b from-purple-900/40 via-black to-black" />
-				<div className="pointer-events-none absolute -top-40 -left-40 h-[32rem] w-[32rem] rounded-full bg-fuchsia-500/20 blur-3xl" />
-				<div className="pointer-events-none absolute -bottom-40 -right-40 h-[32rem] w-[32rem] rounded-full bg-cyan-500/20 blur-3xl" />
-				<div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,transparent_20%,rgba(255,255,255,0.04)_21%,transparent_22%)] bg-[length:22px_22px] opacity-40" />
+				<div className="absolute inset-0 bg-gradient-to-b from-purple-900/50 via-black to-black" />
+				<div className="pointer-events-none absolute -top-40 -left-40 h-[40rem] w-[40rem] rounded-full bg-fuchsia-500/30 blur-3xl animate-pulse" />
+				<div className="pointer-events-none absolute -bottom-40 -right-40 h-[40rem] w-[40rem] rounded-full bg-cyan-500/30 blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
+				<div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,transparent_20%,rgba(255,255,255,0.05)_21%,transparent_22%)] bg-[length:22px_22px] opacity-50" />
 			</div>
 
-			<div className="mx-auto max-w-6xl p-6 space-y-6">
-				<div className="flex items-center justify-between">
-					<h1 className="bg-gradient-to-b from-white via-white to-white/70 bg-clip-text text-3xl font-extrabold tracking-tight text-transparent sm:text-4xl">SonifyAI</h1>
-					<div className="flex items-center gap-4">
-					{session ? (
-							<div className="flex items-center gap-2 text-sm text-white/80">
-								<div className="w-2 h-2 rounded-full bg-green-400"></div>
-								<span>Signed in as {session.user?.name || session.user?.email}</span>
+			<div className="mx-auto max-w-4xl px-4 py-8 sm:px-6 lg:px-8">
+				{/* Header */}
+				<div className="flex items-center justify-between mb-8">
+					<Link href="/" className="group flex items-center gap-2 text-white/70 hover:text-white transition-colors">
+						<svg className="w-5 h-5 transform group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+							<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+						</svg>
+						<span className="text-sm">Back</span>
+					</Link>
+					<div className="flex items-center gap-3">
+						{session ? (
+							<div className="flex items-center gap-2 text-sm text-white/70">
+								<div className="w-2 h-2 rounded-full bg-green-400 animate-pulse"></div>
+								<span className="hidden sm:inline">{session.user?.name || session.user?.email}</span>
 							</div>
 						) : (
-							<div className="flex items-center gap-2 text-sm text-white/80">
-								<div className="w-2 h-2 rounded-full bg-yellow-400"></div>
-								<span>Guest Mode</span>
-							</div>
-						)}
-						<Link href="/" className="text-sm text-white/80 underline hover:text-white">Back</Link>
-					</div>
-				</div>
-				<p className="text-white/70">
-					{isGuestMode
-						? "Describe your mood and let SonifyAI generate the perfect playlist preview. Sign in to create playlists on Spotify."
-						: "Describe your mood, customize options, and let SonifyAI generate the perfect playlist. Then push it to Spotify."
-					}
-				</p>
-				
-				{/* Enhanced explanation about Spotify integration */}
-				<div className="rounded-xl border border-blue-300/20 bg-blue-400/10 p-4 mt-4">
-					<div className="flex items-start space-x-3">
-						<div className="flex-shrink-0">
-							<svg className="w-5 h-5 text-blue-400 mt-0.5" fill="currentColor" viewBox="0 0 24 24">
-								<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-							</svg>
-						</div>
-						<div>
-							<h3 className="font-semibold text-blue-200 mb-1">Why &quot;Listen on Spotify&quot;?</h3>
-							<p className="text-sm text-blue-200/80">
-								We verify all songs on Spotify to ensure they&apos;re real and available. Click &quot;Play on Spotify&quot; to hear the full song, 
-								add to your playlists, and discover more from the artist. This gives you the best music experience with full access to Spotify&apos;s features.
-							</p>
-						</div>
-					</div>
-				</div>
-				
-
-				{!session && (
-					<div className="rounded-xl border border-yellow-300/20 bg-yellow-400/10 p-4">
-						<div className="flex items-center justify-between">
-							<div>
-								<h3 className="font-semibold text-yellow-200">Guest Mode</h3>
-								<p className="text-sm text-yellow-200/80">You can generate playlist previews with SonifyAI without signing in. Sign in to create playlists on Spotify.</p>
-							</div>
 							<Link 
 								href="/api/auth/signin/spotify?callbackUrl=/generate"
-								className="inline-flex items-center justify-center rounded-lg bg-gradient-to-r from-fuchsia-500 via-purple-500 to-cyan-400 px-4 py-2 text-sm font-semibold text-white shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 active:scale-95"
+								className="inline-flex items-center gap-2 rounded-lg bg-white/10 hover:bg-white/20 px-4 py-2 text-sm font-medium text-white backdrop-blur-sm transition-all hover:scale-105"
 							>
-								Sign In
+								<span>Sign In</span>
 							</Link>
-						</div>
+						)}
 					</div>
-				)}
+				</div>
 
+				{/* Hero Section */}
+				<div className="text-center mb-12">
+					<h1 className="bg-gradient-to-r from-white via-fuchsia-200 to-cyan-200 bg-clip-text text-5xl sm:text-6xl font-extrabold tracking-tight text-transparent mb-4">
+						Create Your Perfect Playlist
+					</h1>
+					<p className="text-white/60 text-lg max-w-2xl mx-auto">
+						Describe your mood and let AI curate the perfect soundtrack
+					</p>
+				</div>
+
+				{/* Success/Error Messages */}
 				{createdLink && (
-					<div className="rounded-md border border-green-300/20 bg-green-400/10 p-3 text-sm text-green-200">
-						<strong className="text-green-300">Success:</strong> Playlist created. {" "}
-						<a href={createdLink} target="_blank" className="underline">Open on Spotify</a>
+					<div className="mb-6 rounded-xl border border-green-400/30 bg-green-500/20 backdrop-blur-sm p-4 text-sm text-green-200 animate-in slide-in-from-top">
+						<strong className="text-green-300">Success!</strong> Playlist created. {" "}
+						<a href={createdLink} target="_blank" rel="noopener noreferrer" className="underline hover:text-green-100">Open on Spotify</a>
 					</div>
 				)}
 				{error && (
-					<div className="rounded-md border border-red-300/20 bg-red-400/10 p-3 text-sm text-red-200">{error}</div>
+					<div className="mb-6 rounded-xl border border-red-400/30 bg-red-500/20 backdrop-blur-sm p-4 text-sm text-red-200 animate-in slide-in-from-top">
+						{error}
+					</div>
 				)}
 				
 				{/* Success Animation */}
 				{showSuccessAnimation && (
-					<div className="fixed top-4 right-4 z-50 animate-pulse">
+					<div className="fixed top-4 right-4 z-50 animate-in slide-in-from-right">
 						<div className="bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg flex items-center space-x-2">
 							<svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
 								<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
@@ -502,338 +482,372 @@ export default function GeneratePage() {
 					</div>
 				)}
 
-				<div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-					<form onSubmit={handleGenerate} className="space-y-6 rounded-xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm shadow-xl">
-						{/* Playlist Templates Section */}
-						<div>
-							<label className="block text-sm font-medium mb-3 text-white">Quick Start Templates</label>
-							<div className="grid grid-cols-2 gap-3 mb-4">
-								{playlistTemplates.map((template) => (
-									<button
-										key={template.id}
-										type="button"
-										onClick={() => handleTemplateSelect(template)}
-										className={`p-3 rounded-lg border transition-all duration-200 text-left ${
-											selectedTemplate === template.id
-												? `border-fuchsia-400 bg-gradient-to-r ${template.color} text-white shadow-lg`
-												: 'border-white/20 bg-white/5 text-white/80 hover:border-white/40 hover:bg-white/10'
-										}`}
-									>
-										<div className="font-medium text-sm">{template.name}</div>
-										<div className="text-xs opacity-80 mt-1">{template.description}</div>
-									</button>
-								))}
-							</div>
-							<div className="flex items-center justify-between">
-								<div className="text-xs text-white/60">
-								{selectedTemplate ? (
-									<span className="text-fuchsia-300">✓ Template selected: {playlistTemplates.find(t => t.id === selectedTemplate)?.name}</span>
-								) : (
-									"Click a template to auto-fill the form, or write your own mood below"
-								)}
-							</div>
-								{selectedTemplate && (
-									<button
-										type="button"
-										onClick={clearTemplate}
-										className="text-xs text-fuchsia-400 hover:text-fuchsia-300 underline"
-									>
-										Clear Template
-									</button>
-								)}
-							</div>
+				{/* Main Form */}
+				<form onSubmit={handleGenerate} className="space-y-6">
+					{/* Quick Templates - Horizontal Scroll */}
+					<div>
+						<div className="flex items-center justify-between mb-4">
+							<h2 className="text-sm font-semibold text-white/90 uppercase tracking-wider">Quick Start</h2>
+							{selectedTemplate && (
+								<button
+									type="button"
+									onClick={clearTemplate}
+									className="text-xs text-fuchsia-400 hover:text-fuchsia-300 transition-colors"
+								>
+									Clear
+								</button>
+							)}
 						</div>
+						<div className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide -mx-2 px-2">
+							{playlistTemplates.map((template) => (
+								<button
+									key={template.id}
+									type="button"
+									onClick={() => handleTemplateSelect(template)}
+									className={`flex-shrink-0 px-4 py-3 rounded-xl border transition-all duration-200 text-left min-w-[160px] ${
+										selectedTemplate === template.id
+											? `border-fuchsia-400 bg-gradient-to-br ${template.color} text-white shadow-lg scale-105`
+											: 'border-white/20 bg-white/5 text-white/80 hover:border-white/40 hover:bg-white/10 hover:scale-[1.02]'
+									}`}
+								>
+									<div className="font-semibold text-sm mb-1">{template.name}</div>
+									<div className="text-xs opacity-90">{template.description}</div>
+								</button>
+							))}
+						</div>
+					</div>
 
-						{/* Mood Prompt Section */}
-						<div>
-							<label className="block text-sm font-medium mb-3 text-white">Mood prompt</label>
+					{/* Main Mood Input - Hero Style */}
+					<div className="relative">
+						<div className="absolute inset-0 bg-gradient-to-r from-fuchsia-500/20 via-purple-500/20 to-cyan-500/20 rounded-2xl blur-xl"></div>
+						<div className="relative rounded-2xl border border-white/20 bg-white/5 backdrop-blur-xl p-6 sm:p-8">
+							<label className="block text-sm font-medium mb-4 text-white/90">
+								What&apos;s your vibe? ✨
+							</label>
 							<textarea
-								className="w-full rounded-lg border border-white/20 bg-white/5 backdrop-blur-sm p-3 text-white placeholder-white/50 focus:border-fuchsia-400 focus:outline-none focus:ring-2 focus:ring-fuchsia-400/20 transition-all duration-200 resize-none"
+								className="w-full rounded-xl border border-white/20 bg-white/10 backdrop-blur-sm p-4 sm:p-6 text-white placeholder-white/40 focus:border-fuchsia-400 focus:outline-none focus:ring-2 focus:ring-fuchsia-400/30 transition-all duration-200 resize-none text-lg"
 								rows={4}
 								value={prompt}
 								onChange={(e) => setPrompt(e.target.value)}
-								placeholder="e.g., late night drive under city lights, workout motivation, chill study vibes"
+								placeholder="e.g., late night drive under city lights, workout motivation, chill study vibes..."
 							/>
-							<div className="text-xs text-white/60 mt-2">Describe your mood with vivid descriptors and emojis ✨</div>
-						</div>
-
-						{/* Language, Genre and Time Period Selection */}
-						<div className="space-y-4">
-							<h3 className="text-lg font-semibold text-white">Customize Your Playlist</h3>
-							
-							{/* Language Selection */}
-							<div>
-								<label className="block text-sm font-medium mb-3 text-white">Language/Region (Optional)</label>
-								<div className="relative">
-									<select
-										value={selectedLanguage}
-										onChange={(e) => handleLanguageChange(e.target.value)}
-										className="w-full rounded-lg border border-white/20 bg-white/5 backdrop-blur-sm p-3 text-white focus:border-fuchsia-400 focus:outline-none focus:ring-2 focus:ring-fuchsia-400/20 transition-all duration-200 appearance-none cursor-pointer"
-									>
-										<option value="" className="bg-gray-800 text-white">Any language</option>
-										{languages.map((lang) => (
-											<option key={lang.value} value={lang.value} className="bg-gray-800 text-white">
-												{lang.flag} {lang.label}
-											</option>
-										))}
-									</select>
-									<div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-										<svg className="w-5 h-5 text-white/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-											<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-										</svg>
-									</div>
-								</div>
-								<div className="text-xs text-white/60 mt-2">
-									Choose a language/region to see relevant genres
-								</div>
-							</div>
-
-							{/* Genre Selection */}
-							<div>
-								<label className="block text-sm font-medium mb-3 text-white">
-									Genre (Optional)
-									{selectedLanguage && (
-										<span className="text-xs text-fuchsia-300 ml-2">
-											- {languages.find(l => l.value === selectedLanguage)?.label} genres
-										</span>
-									)}
-								</label>
-								<div className="relative">
-									<select
-										key={`genre-${selectedLanguage}`} // Force re-render when language changes
-										value={selectedGenre}
-										onChange={(e) => setSelectedGenre(e.target.value)}
-										className="w-full rounded-lg border border-white/20 bg-white/5 backdrop-blur-sm p-3 text-white focus:border-fuchsia-400 focus:outline-none focus:ring-2 focus:ring-fuchsia-400/20 transition-all duration-200 appearance-none cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
-										disabled={!selectedLanguage}
-									>
-										<option value="" className="bg-gray-800 text-white">
-											{selectedLanguage ? `Any ${languages.find(l => l.value === selectedLanguage)?.label} genre` : "Select a language first"}
-										</option>
-										{currentGenres.map((genre) => (
-											<option key={genre} value={genre} className="bg-gray-800 text-white">
-												{genre}
-											</option>
-										))}
-									</select>
-									<div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-										<svg className="w-5 h-5 text-white/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-											<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-										</svg>
-									</div>
-								</div>
-								<div className="text-xs text-yellow-200 mt-2">
-									💡 {selectedLanguage ? `Showing ${selectedLanguage} genres - choose one that matches your mood` : "Select a language above to see relevant genres"}
-								</div>
-							</div>
-
-						</div>
-
-						{/* Basic Settings */}
-						<div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-							<div>
-								<label className="block text-sm font-medium mb-3 text-white">Playlist title</label>
-								<input 
-									className="w-full rounded-lg border border-white/20 bg-white/5 backdrop-blur-sm p-3 text-white placeholder-white/50 focus:border-fuchsia-400 focus:outline-none focus:ring-2 focus:ring-fuchsia-400/20 transition-all duration-200" 
-									value={title} 
-									onChange={(e) => setTitle(e.target.value)} 
-								/>
-							</div>
-							<div>
-								<label className="block text-sm font-medium mb-3 text-white">Number of songs: <span className="font-semibold text-fuchsia-300">{numSongs}</span></label>
-								<input
-									type="range"
-									min={5}
-									max={50}
-									step={5}
-									className="w-full accent-fuchsia-400 h-2 bg-white/10 rounded-lg appearance-none cursor-pointer"
-									value={numSongs}
-									onChange={(e) => setNumSongs(parseInt(e.target.value || "0", 10))}
-								/>
-								<div className="flex justify-between text-xs text-white/60 mt-1">
-									<span>5</span>
-									<span>50</span>
-								</div>
-							</div>
-							<div className="sm:col-span-2">
-								<label className="block text-sm font-medium mb-3 text-white">Description</label>
-								<input 
-									className="w-full rounded-lg border border-white/20 bg-white/5 backdrop-blur-sm p-3 text-white placeholder-white/50 focus:border-fuchsia-400 focus:outline-none focus:ring-2 focus:ring-fuchsia-400/20 transition-all duration-200" 
-									value={description} 
-									onChange={(e) => setDescription(e.target.value)} 
-									placeholder="Generated by SonifyAI" 
-								/>
-							</div>
-							{!isGuestMode && (
-								<div className="flex items-center gap-3 sm:col-span-2">
-									<input 
-										id="public" 
-										type="checkbox" 
-										checked={isPublic} 
-										onChange={(e) => setIsPublic(e.target.checked)}
-										className="w-4 h-4 text-fuchsia-400 bg-white/5 border-white/20 rounded focus:ring-fuchsia-400 focus:ring-2"
-									/>
-									<label htmlFor="public" className="text-sm text-white">Public playlist</label>
-								</div>
-							)}
-						</div>
-						<div className="flex items-center gap-3">
-							<button
-								type="submit"
-								disabled={loading}
-								className="inline-flex items-center justify-center rounded-lg bg-gradient-to-r from-fuchsia-500 via-purple-500 to-cyan-400 px-6 py-3 text-sm font-semibold text-white shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 active:scale-95 disabled:opacity-60 disabled:hover:scale-100"
-							>
-								{loading ? (
-									<>
-										<div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
-										<span>SonifyAI is crafting your playlist...</span>
-									</>
-								) : (
-									<>
-										<svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
-											<path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-										</svg>
-										<span>Generate with SonifyAI</span>
-									</>
-								)}
-							</button>
-							<Link href="/" className="text-sm text-white/80 underline hover:text-white">Cancel</Link>
-						</div>
-					</form>
-
-					<div className="space-y-4">
-						<div className="rounded-xl border border-white/10 bg-white/5 backdrop-blur-sm shadow-xl">
-							<div className="p-6 border-b border-white/10 flex items-center justify-between">
-								<h2 className="text-lg font-semibold text-white">Preview</h2>
-								{playlist && (
-									<button
-										onClick={handleRefresh}
-										disabled={isRefreshing}
-										className="inline-flex items-center space-x-2 bg-fuchsia-500 hover:bg-fuchsia-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 hover:scale-105 active:scale-95 disabled:opacity-60 disabled:hover:scale-100 shadow-lg hover:shadow-xl"
-									>
-										{isRefreshing ? (
-											<>
-												<div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-												<span>Refreshing...</span>
-											</>
-										) : (
-											<>
-												<svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-													<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-												</svg>
-												<span>Get New Suggestions</span>
-											</>
-										)}
-									</button>
-								)}
-							</div>
-							{!playlist ? (
-								<div className="p-6 text-sm text-white/60">
+							<div className="flex items-center justify-between mt-4">
+								<p className="text-xs text-white/50">
+									{!isGuestMode ? "Generate and create on Spotify" : "Preview mode - Sign in to create playlists"}
+								</p>
+								<button
+									type="submit"
+									disabled={loading || !prompt.trim()}
+									className="inline-flex items-center justify-center rounded-xl bg-gradient-to-r from-fuchsia-500 via-purple-500 to-cyan-400 px-6 sm:px-8 py-3 sm:py-4 text-base font-bold text-white shadow-2xl hover:shadow-fuchsia-500/50 transition-all duration-200 hover:scale-105 active:scale-95 disabled:opacity-50 disabled:hover:scale-100 disabled:cursor-not-allowed"
+								>
 									{loading ? (
-										<div className="flex items-center space-x-3">
-											<div className="w-6 h-6 border-2 border-fuchsia-400 border-t-transparent rounded-full animate-spin"></div>
-											<span>SonifyAI is crafting your perfect playlist...</span>
-										</div>
+										<>
+											<div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
+											<span className="hidden sm:inline">Crafting your playlist...</span>
+											<span className="sm:hidden">Generating...</span>
+										</>
 									) : (
-										"No playlist yet. Generate one to preview tracks."
+										<>
+											<svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
+												<path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+											</svg>
+											<span>Generate Playlist</span>
+										</>
 									)}
-								</div>
-							) : (
-								<>
-									<div className="flex gap-4 p-6 items-center">
-										<Image src={playlist.imageUrl} alt="cover" width={96} height={96} className="w-24 h-24 rounded object-cover" />
-										<div className="flex-1">
-											<h3 className="text-lg font-medium text-white">{playlist.name}</h3>
-											<p className="text-sm text-white/70">{playlist.description}</p>
-											
-											{/* Enhanced Verification Stats */}
-											{playlist.verificationStats && (
-												<div className="mt-3 p-3 bg-white/5 rounded-lg border border-white/10">
-													<div className="text-xs text-white/80 font-medium mb-2">Verification Status</div>
-													<div className="flex items-center gap-4">
-														<span className="flex items-center gap-2">
-															<span className="w-3 h-3 rounded-full bg-green-400 animate-pulse"></span>
-															<span className="text-green-300 font-medium">{playlist.verificationStats.verifiedOnSpotify}</span>
-															<span className="text-white/70">verified on Spotify</span>
-														</span>
-														{playlist.verificationStats.unverified > 0 && (
-															<span className="flex items-center gap-2">
-																<span className="w-3 h-3 rounded-full bg-yellow-400"></span>
-																<span className="text-yellow-300 font-medium">{playlist.verificationStats.unverified}</span>
-																<span className="text-white/70">unverified</span>
-															</span>
-														)}
-													</div>
-													<div className="mt-2 text-xs text-white/60">
-														{playlist.verificationStats.verifiedOnSpotify === playlist.verificationStats.totalGenerated ? 
-															"🎉 All songs verified! Perfect playlist ready." :
-															"✨ Most songs verified - great playlist quality!"
-														}
-													</div>
-												</div>
-											)}
-											
-											{isGuestMode ? (
-												<div className="text-sm text-yellow-200 mt-2">
-													Sign in to create this SonifyAI playlist on Spotify
-												</div>
-											) : createdLink ? (
-												<a href={createdLink} target="_blank" className="inline-flex items-center space-x-2 bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg text-sm font-semibold shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 active:scale-95 mt-2">
-													<svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-														<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-													</svg>
-													<span>Open on Spotify</span>
-												</a>
-											) : (
-												<button onClick={handleCreateOnSpotify} disabled={creating} className="inline-flex items-center justify-center rounded-lg bg-gradient-to-r from-fuchsia-500 via-purple-500 to-cyan-400 px-4 py-2 text-sm font-semibold text-white shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 active:scale-95 disabled:opacity-60 disabled:hover:scale-100 mt-2">
-													{creating ? (
-														<>
-															<div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
-															<span>Creating on Spotify...</span>
-														</>
-													) : (
-														<>
-															<svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 24 24">
-																<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-															</svg>
-															<span>Create on Spotify</span>
-														</>
-													)}
-												</button>
-											)}
-										</div>
-									</div>
-									<div className="border-t border-white/10 max-h-[420px] overflow-auto">
-										<ul className="divide-y divide-white/10">
-											{playlist.tracks.map((t, idx) => (
-												<li key={t.id} className="p-4 text-sm hover:bg-white/5 transition-colors">
-													<div className="flex items-center gap-4">
-														<span className="w-6 text-white/50 font-mono text-xs flex-shrink-0">{idx + 1}</span>
-														<div className="flex-1 min-w-0">
-															<AudioPlayer
-																previewUrl={t.previewUrl || undefined}
-																title={t.title}
-																artist={t.artist}
-																spotifyId={t.spotifyId}
-																className="w-full"
-																onAddToPlaylist={() => handleAddToPlaylist(t.title, t.artist)}
-																onShareSong={() => t.spotifyId && handleShareSong(t.title, t.artist, t.spotifyId)}
-															/>
-														</div>
-														{t.spotifyId && (
-															<span className="text-green-400 text-xs flex-shrink-0" title="Verified on Spotify">
-																✓
-															</span>
-														)}
-													</div>
-												</li>
-											))}
-										</ul>
-									</div>
-								</>
-							)}
+								</button>
+							</div>
 						</div>
 					</div>
-				</div>
+
+					{/* Advanced Options - Collapsible */}
+					<div className="rounded-xl border border-white/10 bg-white/5 backdrop-blur-sm overflow-hidden">
+						<button
+							type="button"
+							onClick={() => setShowAdvanced(!showAdvanced)}
+							className="w-full flex items-center justify-between p-4 text-left hover:bg-white/5 transition-colors"
+						>
+							<span className="text-sm font-semibold text-white">Advanced Options</span>
+							<svg 
+								className={`w-5 h-5 text-white/60 transition-transform duration-200 ${showAdvanced ? 'rotate-180' : ''}`}
+								fill="none" 
+								stroke="currentColor" 
+								viewBox="0 0 24 24"
+							>
+								<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+							</svg>
+						</button>
+						
+						{showAdvanced && (
+							<div className="p-4 pt-0 space-y-4 animate-in slide-in-from-top duration-200">
+								{/* Language & Genre */}
+								<div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+									<div>
+										<label className="block text-xs font-medium mb-2 text-white/70">Language/Region</label>
+										<div className="relative">
+											<select
+												value={selectedLanguage}
+												onChange={(e) => handleLanguageChange(e.target.value)}
+												className="w-full rounded-lg border border-white/20 bg-white/5 backdrop-blur-sm p-2.5 text-sm text-white focus:border-fuchsia-400 focus:outline-none focus:ring-2 focus:ring-fuchsia-400/20 transition-all appearance-none cursor-pointer"
+											>
+												<option value="" className="bg-gray-800">Any language</option>
+												{languages.map((lang) => (
+													<option key={lang.value} value={lang.value} className="bg-gray-800">
+														{lang.flag} {lang.label}
+													</option>
+												))}
+											</select>
+											<div className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+												<svg className="w-4 h-4 text-white/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+													<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+												</svg>
+											</div>
+										</div>
+									</div>
+									<div>
+										<label className="block text-xs font-medium mb-2 text-white/70">Genre</label>
+										<div className="relative">
+											<select
+												key={`genre-${selectedLanguage}`}
+												value={selectedGenre}
+												onChange={(e) => setSelectedGenre(e.target.value)}
+												className="w-full rounded-lg border border-white/20 bg-white/5 backdrop-blur-sm p-2.5 text-sm text-white focus:border-fuchsia-400 focus:outline-none focus:ring-2 focus:ring-fuchsia-400/20 transition-all appearance-none cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+												disabled={!selectedLanguage}
+											>
+												<option value="" className="bg-gray-800">
+													{selectedLanguage ? "Any genre" : "Select language first"}
+												</option>
+												{currentGenres.map((genre) => (
+													<option key={genre} value={genre} className="bg-gray-800">
+														{genre}
+													</option>
+												))}
+											</select>
+											<div className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+												<svg className="w-4 h-4 text-white/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+													<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+												</svg>
+											</div>
+										</div>
+									</div>
+								</div>
+
+								{/* Title, Songs, Description */}
+								<div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+									<div>
+										<label className="block text-xs font-medium mb-2 text-white/70">Playlist Title</label>
+										<input 
+											className="w-full rounded-lg border border-white/20 bg-white/5 backdrop-blur-sm p-2.5 text-sm text-white placeholder-white/40 focus:border-fuchsia-400 focus:outline-none focus:ring-2 focus:ring-fuchsia-400/20 transition-all" 
+											value={title} 
+											onChange={(e) => setTitle(e.target.value)} 
+											placeholder="My Playlist"
+										/>
+									</div>
+									<div>
+										<label className="block text-xs font-medium mb-2 text-white/70">
+											Songs: <span className="text-fuchsia-300 font-semibold">{numSongs}</span>
+										</label>
+										<input
+											type="range"
+											min={5}
+											max={50}
+											step={5}
+											className="w-full accent-fuchsia-400 h-2 bg-white/10 rounded-lg appearance-none cursor-pointer"
+											value={numSongs}
+											onChange={(e) => setNumSongs(parseInt(e.target.value || "0", 10))}
+										/>
+										<div className="flex justify-between text-xs text-white/50 mt-1">
+											<span>5</span>
+											<span>50</span>
+										</div>
+									</div>
+								</div>
+								<div>
+									<label className="block text-xs font-medium mb-2 text-white/70">Description</label>
+									<input 
+										className="w-full rounded-lg border border-white/20 bg-white/5 backdrop-blur-sm p-2.5 text-sm text-white placeholder-white/40 focus:border-fuchsia-400 focus:outline-none focus:ring-2 focus:ring-fuchsia-400/20 transition-all" 
+										value={description} 
+										onChange={(e) => setDescription(e.target.value)} 
+										placeholder="Generated by SonifyAI" 
+									/>
+								</div>
+								{!isGuestMode && (
+									<div className="flex items-center gap-2">
+										<input 
+											id="public" 
+											type="checkbox" 
+											checked={isPublic} 
+											onChange={(e) => setIsPublic(e.target.checked)}
+											className="w-4 h-4 text-fuchsia-400 bg-white/5 border-white/20 rounded focus:ring-fuchsia-400 focus:ring-2"
+										/>
+										<label htmlFor="public" className="text-sm text-white/80">Public playlist</label>
+									</div>
+								)}
+							</div>
+						)}
+					</div>
+				</form>
+
+				{/* Playlist Preview Section */}
+				{playlist && (
+					<div className="mt-12 rounded-2xl border border-white/20 bg-white/5 backdrop-blur-xl overflow-hidden shadow-2xl animate-in slide-in-from-bottom duration-500">
+						{/* Playlist Header */}
+						<div className="p-6 sm:p-8 border-b border-white/10 bg-gradient-to-r from-fuchsia-500/10 via-purple-500/10 to-cyan-500/10">
+							<div className="flex flex-col sm:flex-row gap-6 items-start sm:items-center">
+								<Image 
+									src={playlist.imageUrl} 
+									alt="cover" 
+									width={120} 
+									height={120} 
+									className="w-24 h-24 sm:w-32 sm:h-32 rounded-xl object-cover shadow-lg flex-shrink-0" 
+								/>
+								<div className="flex-1 min-w-0">
+									<h3 className="text-2xl sm:text-3xl font-bold text-white mb-2">{playlist.name}</h3>
+									<p className="text-white/70 mb-4">{playlist.description}</p>
+									
+									{/* Verification Stats - Compact */}
+									{playlist.verificationStats && (
+										<div className="flex items-center gap-4 mb-4">
+											<span className="flex items-center gap-2 text-sm">
+												<span className="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
+												<span className="text-green-300 font-semibold">{playlist.verificationStats.verifiedOnSpotify}</span>
+												<span className="text-white/60">verified</span>
+											</span>
+											{playlist.verificationStats.unverified > 0 && (
+												<span className="flex items-center gap-2 text-sm">
+													<span className="w-2 h-2 rounded-full bg-yellow-400"></span>
+													<span className="text-yellow-300 font-semibold">{playlist.verificationStats.unverified}</span>
+													<span className="text-white/60">unverified</span>
+												</span>
+											)}
+										</div>
+									)}
+									
+									{/* Actions */}
+									<div className="flex flex-wrap gap-3">
+										{isGuestMode ? (
+											<Link 
+												href="/api/auth/signin/spotify?callbackUrl=/generate"
+												className="inline-flex items-center space-x-2 bg-gradient-to-r from-fuchsia-500 via-purple-500 to-cyan-400 hover:from-fuchsia-600 hover:via-purple-600 hover:to-cyan-500 text-white px-5 py-2.5 rounded-xl text-sm font-semibold shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 active:scale-95"
+											>
+												<span>Sign In to Create on Spotify</span>
+											</Link>
+										) : createdLink ? (
+											<a 
+												href={createdLink} 
+												target="_blank" 
+												rel="noopener noreferrer"
+												className="inline-flex items-center space-x-2 bg-green-500 hover:bg-green-600 text-white px-5 py-2.5 rounded-xl text-sm font-semibold shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 active:scale-95"
+											>
+												<svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+													<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+												</svg>
+												<span>Open on Spotify</span>
+											</a>
+										) : (
+											<button 
+												onClick={handleCreateOnSpotify} 
+												disabled={creating} 
+												className="inline-flex items-center justify-center rounded-xl bg-gradient-to-r from-fuchsia-500 via-purple-500 to-cyan-400 hover:from-fuchsia-600 hover:via-purple-600 hover:to-cyan-500 px-5 py-2.5 text-sm font-semibold text-white shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 active:scale-95 disabled:opacity-60 disabled:hover:scale-100"
+											>
+												{creating ? (
+													<>
+														<div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
+														<span>Creating...</span>
+													</>
+												) : (
+													<>
+														<svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 24 24">
+															<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+														</svg>
+														<span>Create on Spotify</span>
+													</>
+												)}
+											</button>
+										)}
+										<button
+											onClick={handleRefresh}
+											disabled={isRefreshing}
+											className="inline-flex items-center space-x-2 bg-white/10 hover:bg-white/20 text-white px-5 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 hover:scale-105 active:scale-95 disabled:opacity-60 disabled:hover:scale-100 backdrop-blur-sm"
+										>
+											{isRefreshing ? (
+												<>
+													<div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+													<span>Refreshing...</span>
+												</>
+											) : (
+												<>
+													<svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+														<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+													</svg>
+													<span>Get New Suggestions</span>
+												</>
+											)}
+										</button>
+									</div>
+								</div>
+							</div>
+						</div>
+						
+						{/* Tracks List */}
+						<div className="max-h-[500px] overflow-y-auto">
+							<ul className="divide-y divide-white/10">
+								{playlist.tracks.map((t, idx) => (
+									<li key={t.id} className="p-4 hover:bg-white/5 transition-colors group">
+										<div className="flex items-center gap-4">
+											<span className="w-8 text-white/40 font-bold text-sm flex-shrink-0 group-hover:text-white/60 transition-colors">
+												{idx + 1}
+											</span>
+											<div className="flex-1 min-w-0">
+												<AudioPlayer
+													previewUrl={t.previewUrl || undefined}
+													title={t.title}
+													artist={t.artist}
+													spotifyId={t.spotifyId}
+													className="w-full"
+													onAddToPlaylist={() => handleAddToPlaylist(t.title, t.artist)}
+													onShareSong={() => t.spotifyId && handleShareSong(t.title, t.artist, t.spotifyId)}
+												/>
+											</div>
+											{t.spotifyId && (
+												<span className="text-green-400 text-sm flex-shrink-0" title="Verified on Spotify">
+													<svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+														<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+													</svg>
+												</span>
+											)}
+										</div>
+									</li>
+								))}
+							</ul>
+						</div>
+					</div>
+				)}
+
+				{/* Empty State */}
+				{!playlist && !loading && (
+					<div className="mt-12 text-center py-16 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm">
+						<div className="max-w-md mx-auto">
+							<div className="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-r from-fuchsia-500/20 via-purple-500/20 to-cyan-500/20 flex items-center justify-center">
+								<svg className="w-10 h-10 text-white/40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+									<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
+								</svg>
+							</div>
+							<h3 className="text-xl font-semibold text-white mb-2">No playlist yet</h3>
+							<p className="text-white/60">Generate one above to preview tracks</p>
+						</div>
+					</div>
+				)}
+
+				{/* Loading State */}
+				{loading && (
+					<div className="mt-12 text-center py-16 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm">
+						<div className="max-w-md mx-auto">
+							<div className="w-16 h-16 mx-auto mb-6 border-4 border-fuchsia-400 border-t-transparent rounded-full animate-spin"></div>
+							<h3 className="text-xl font-semibold text-white mb-2">Crafting your playlist...</h3>
+							<p className="text-white/60">This may take a few moments</p>
+						</div>
+					</div>
+				)}
 			</div>
 		</div>
 	);
