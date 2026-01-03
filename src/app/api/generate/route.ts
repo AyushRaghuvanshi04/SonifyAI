@@ -6,12 +6,12 @@ interface SpotifyArtist {
 	name: string;
 }
 
-interface GeminiResponse {
-	songs: Array<{
-		title: string;
-		artist: string;
-	}>;
+interface Song {
+	title: string;
+	artist: string;
 }
+
+type GeminiResponse = Array<Song>;
 
 interface TrackData {
 	title: string;
@@ -176,7 +176,7 @@ export async function POST(request: NextRequest) {
 		}
 
 		const tracks: TrackData[] = [];
-		for (const song of parsed.songs) {
+		for (const song of parsed) {
 			const verification = await verifySongOnSpotify(song.title, song.artist);
 			tracks.push({
 				title: song.title,
@@ -194,8 +194,9 @@ export async function POST(request: NextRequest) {
 		});
 	} catch (error) {
 		console.error("Generate error:", error);
+		const errorMessage = error instanceof Error ? error.message : "Internal server error";
 		return NextResponse.json(
-			{ error: "Internal server error" },
+			{ error: errorMessage },
 			{ status: 500 }
 		);
 	}
