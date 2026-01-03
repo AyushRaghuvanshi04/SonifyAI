@@ -42,19 +42,25 @@ jobs:
         SPOTIFY_CLIENT_SECRET: test-client-secret
         GEMINI_API_KEY: test-gemini-key
 
-  deploy:
-    needs: test
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
-
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-
-    - name: Deploy to Vercel
-      uses: amondnet/vercel-action@v25
-      with:
-        vercel-token: ${{ secrets.VERCEL_TOKEN }}
-        vercel-org-id: ${{ secrets.ORG_ID }}
-        vercel-project-id: ${{ secrets.PROJECT_ID }}
-        vercel-args: '--prod'
+  # Deploy job removed - Vercel automatically deploys from GitHub when connected
+  # If you want to use GitHub Actions for deployment, add these secrets to your repository:
+  # - VERCEL_TOKEN (get from: vercel.com/account/tokens)
+  # - VERCEL_ORG_ID (get from: vercel.com/account/settings)
+  # - VERCEL_PROJECT_ID (get from your Vercel project settings)
+  #
+  # deploy:
+  #   needs: test
+  #   runs-on: ubuntu-latest
+  #   if: github.ref == 'refs/heads/main'
+  #
+  #   steps:
+  #   - name: Checkout code
+  #     uses: actions/checkout@v4
+  #
+  #   - name: Deploy to Vercel
+  #     uses: amondnet/vercel-action@v25
+  #     with:
+  #       vercel-token: ${{ secrets.VERCEL_TOKEN }}
+  #       vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+  #       vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+  #       vercel-args: '--prod'
