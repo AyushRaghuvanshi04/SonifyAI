@@ -148,7 +148,8 @@ export async function POST(request: NextRequest) {
 		}
 
 		const genAI = new GoogleGenerativeAI(geminiApiKey);
-		const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro-002" });
+		// Use gemini-1.0-pro as it's a stable, widely available model
+		const model = genAI.getGenerativeModel({ model: "gemini-1.0-pro" });
 
 		const languageContext = language !== "hollywood" ? `Focus on ${language} music. ` : "";
 		const genreContext = genre ? `Genre: ${genre}. ` : "";
